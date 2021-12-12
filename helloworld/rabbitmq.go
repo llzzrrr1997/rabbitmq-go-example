@@ -23,7 +23,7 @@ type RabbitMQ struct {
 	MqURL string
 }
 
-func NewRabbitMQ( queueName string, exchange string, key string) *RabbitMQ {
+func NewRabbitMQ(queueName string, exchange string, key string) *RabbitMQ {
 	return &RabbitMQ{QueueName: queueName, Exchange: exchange, Key: key, MqURL: MQURL}
 }
 
@@ -32,6 +32,7 @@ func (r *RabbitMQ) Close() {
 	_ = r.channel.Close() //先关闭信道
 	_ = r.conn.Close()    //再关闭链接
 }
+
 //错误处理
 func (r *RabbitMQ) failOnErr(err error, message string) {
 	if err != nil {
@@ -69,7 +70,7 @@ func (r *RabbitMQ) Publish(message string) {
 		nil,
 	)
 	if err != nil {
-		fmt.Printf("QueueDeclare err:%s",err)
+		fmt.Printf("QueueDeclare err:%s", err)
 	}
 	//调用channel 发送消息到队列中
 	_ = r.channel.Publish(
@@ -102,7 +103,7 @@ func (r *RabbitMQ) Consume() {
 		nil,
 	)
 	if err != nil {
-		fmt.Printf("QueueDeclare err:%s",err)
+		fmt.Printf("QueueDeclare err:%s", err)
 	}
 	//接收消息
 	msgs, err := r.channel.Consume(
@@ -120,7 +121,7 @@ func (r *RabbitMQ) Consume() {
 		nil,   // args
 	)
 	if err != nil {
-		fmt.Printf("Consume err:%s",err)
+		fmt.Printf("Consume err:%s", err)
 	}
 	forever := make(chan struct{})
 	//启用协程处理消息
